@@ -111,6 +111,18 @@ window.addEventListener('load', () => {
 
   };
 
+  async function mergeSortRecursive(arr, start, end) {
+
+    if (start < end) {
+      middle = floor((start + end) / 2);
+      mergeSortRecursive(arr, start, middle);
+      mergeSortRecursive(arr, middle + 1, end);
+      merge(arr, start, middle, end);
+    }
+  
+  }
+
+
   async function mergeSort() {
     const draw = SVG().addTo('#mergeSort').size(600, 100);
 
@@ -128,6 +140,7 @@ window.addEventListener('load', () => {
       const text = draw.text(randomNumber).move(rectStartX + i * (rectWidth + rectSpacing) + 5, rectStartY + 7);
       arr.push({value: randomNumber, rect: rect, text: text});
     }
+
   }
 
   async function bubbleSort() {
