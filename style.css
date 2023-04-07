@@ -5,3 +5,8 @@ body {
 #container {
   height: 500px;
 }
+
+#sortBySelectionPlay img {
+  height: 30px;
+  width: 30px;
+}
