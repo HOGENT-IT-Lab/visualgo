@@ -1,12 +1,191 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: rgb(20, 94, 125);
+}
+
 body {
-  background-color: #f2f2f2;
+  background-color: rgb(213, 223, 227);
+  font-family: "Ubuntu";
+  color: #fff;
 }
 
-#container {
-  height: 500px;
+h1 {
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgb(171, 198, 209);
+  padding: 5px;
 }
 
-#sortBySelectionPlay img {
-  height: 30px;
-  width: 30px;
+footer {
+  bottom: 0;
+  width: 100%;
+  padding: 5px;
+  background-color: rgb(171, 198, 209);
+}
+
+a {
+  color: rgb(0, 99, 200);
+  display: inline-block;
+  font-weight: bold;
+  position: relative;
+}
+
+a:hover {
+  color: rgb(0, 150, 220);
+}
+
+h2 {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  margin-left: 50px;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  max-width: 70%;
+}
+
+section {
+  display: block;
+  margin-left: 100px;
+  margin-bottom: 20pt;
+  clear: both;
+}
+
+img {
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+div.icons {
+  display: block;
+  text-align: center;
+}
+
+div.icons img {
+  width: 3%;
+  margin-left: 1%;
+  margin-right: 1%;
+  cursor: pointer;
+}
+
+/* NAVBAR SETTINGS */
+
+.wrapper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(90, 138, 158);
+  clip-path: circle(25px at calc(100% - 45px) 45px);
+  transition: all 0.3s ease-in-out;
+}
+#active:checked ~ .wrapper{
+  clip-path: circle(75%);
+}
+.menu-btn{
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  top: 20px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  background-color: rgb(90, 138, 158);
+  transition: all 0.3s ease-in-out;
+}
+#active:checked ~ .menu-btn{
+  color: #fff;
+}
+#active:checked ~ .menu-btn i:before{
+  content: "\f00d";
+}
+.wrapper ul{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  text-align: center;
+}
+.wrapper ul li{
+  margin: 15px 0;
+}
+.wrapper ul li a{
+  color: none;
+  text-decoration: none;
+  font-size: 30px;
+  font-weight: 500;
+  padding: 5px 30px;
+  color: #fff;
+  border-radius: 50px;
+  background: rgb(171, 198, 209);
+  position: relative;
+  line-height: 50px;
+  transition: all 0.3s ease;
+}
+.wrapper ul li a:after{
+  position: absolute;
+  content: "";
+  background: #fff;
+   background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  width: 104%;
+  height: 110%;
+  left: -2%;
+  top: -5%; /* if the font is 'Oswald'*/
+  border-radius: 50px;
+  transform: scaleY(0);
+  z-index: -1;
+  animation: rotate 1.5s linear infinite;
+  transition: transform 0.3s ease;
+}
+.wrapper ul li a:hover:after{
+  transform: scaleY(1);
+}
+.wrapper ul li a:hover{
+  color: #fff;
+}
+input[type="checkbox"]{
+  display: none;
+}
+.content{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  text-align: center;
+  width: 100%;
+  color: #202020;
+}
+.content .title{
+  font-size: 40px;
+  font-weight: 700;
+}
+.content p{
+  font-size: 35px;
+  font-weight: 600;
+}
+
+@keyframes rotate {
+  0%{
+    filter: hue-rotate(0deg);
+  }
+  100%{
+    filter: hue-rotate(360deg);
+  }
 }
