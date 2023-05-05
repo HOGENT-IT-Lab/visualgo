@@ -8,6 +8,7 @@ const rectSpacing = 10;
 const rectStartX = 50;
 const rectStartY = 50;
 
+
 window.addEventListener('load', () => {
   async function sortBySelection() {
     const draw = SVG().addTo("#sortBySelection").size(600, 100);
@@ -68,123 +69,291 @@ window.addEventListener('load', () => {
 
 
 window.onload = function() {
+  
   const sortBySelectionPlay = document.getElementById("sortBySelectionPlay");
+  const sortBySelectionPause = document.getElementById('sortBySelectionPause');
+
 
   sortBySelectionPlay.addEventListener("click", () => {
-    async function sortBySelection() {
-      for (let i = sortBySelectionArr.length - 1; i >= 1; i--) {
-        pos = i;
-        max = sortBySelectionArr[i].value;
-        for (let j = i - 1; j >= 0; j--) {
-          // pink shows current max value
-          sortBySelectionArr[pos].rect.fill("pink");
-          if (sortBySelectionArr[j].value > max) {
-            sortBySelectionArr[pos].rect.fill("#2ecc71");
-            pos = j;
-            max = sortBySelectionArr[j].value;
-          };
-          sortBySelectionArr[j].rect.fill("green");
-          await new Promise(r => setTimeout(r, 100)); // Pause for visualization
-          sortBySelectionArr[j].rect.fill("#2ecc71");
+    function startAnimation() {
+      async function sortBySelection() {
+        for (let currentIndex = sortBySelectionArr.length - 1; currentIndex >= 1; currentIndex--) {
+          let maxValue = sortBySelectionArr[currentIndex].value;
+          let maxIndex = currentIndex;
+          setPinkColor(currentIndex);
+      
+          for (let j = currentIndex - 1; j >= 0; j--) {
+            setGreenColor(j);
+      
+            if (sortBySelectionArr[j].value > maxValue) {
+              maxIndex = j;
+              maxValue = sortBySelectionArr[j].value;
+            }
+      
+            await new Promise(r => setTimeout(r, 100)); // Pause for visualization
+            resetColor(j);
+          }
+      
+          setRedColor(maxIndex);
+      
+          await new Promise(r => setTimeout(r, 1000)); // Pause for visualization
+      
+          swapElements(currentIndex, maxIndex);
+      
+          await new Promise(r => setTimeout(r, 1000)); // Pause for visualization
+      
+          setColor(currentIndex, '#1abc9c');
         }
-        sortBySelectionArr[pos].rect.fill('#e74c3c');
-        await new Promise(r => setTimeout(r, 100)); // Pause for visualization
+      
+        setColor(0, '#1abc9c');
+      }
+      
+      function setPinkColor(index) {
+        sortBySelectionArr[index].rect.fill('orange');
+      }
+      
+      function setGreenColor(index) {
+        sortBySelectionArr[index].rect.fill('green');
+      }
+      
+      function setRedColor(index) {
+        sortBySelectionArr[index].rect.fill('#e74c3c');
+      }
+      
+      function setColor(index, color) {
+        sortBySelectionArr[index].rect.fill(color);
+      }
+      
+      function resetColor(index) {
+        sortBySelectionArr[index].rect.fill('#2ecc71');
+      }
+      
+      function swapElements(index1, index2) {
+        const tempRectX = sortBySelectionArr[index1].rect.x();
+        sortBySelectionArr[index1].rect.x(sortBySelectionArr[index2].rect.x());
+        sortBySelectionArr[index2].rect.x(tempRectX);
+      
+        const tempTextX = sortBySelectionArr[index1].text.x();
+        sortBySelectionArr[index1].text.x(sortBySelectionArr[index2].text.x());
+        sortBySelectionArr[index2].text.x(tempTextX);
+      
+        const temp = sortBySelectionArr[index1];
+        sortBySelectionArr[index1] = sortBySelectionArr[index2];
+        sortBySelectionArr[index2] = temp;
+      }
+      sortBySelection();
+    }
 
-        // Swap rectangles
-        const tempRectX = sortBySelectionArr[pos].rect.x();
-        sortBySelectionArr[pos].rect.x(sortBySelectionArr[i].rect.x());
-        sortBySelectionArr[i].rect.x(tempRectX);
-        
-        // Swap text
-        const tempTextX = sortBySelectionArr[pos].text.x();
-        sortBySelectionArr[pos].text.x(sortBySelectionArr[i].text.x());
-        sortBySelectionArr[i].text.x(tempTextX);
-        
-        // Swap elements in sortBySelectionArray
-        const temp = sortBySelectionArr[pos];
-        sortBySelectionArr[pos] = sortBySelectionArr[i];
-        sortBySelectionArr[i] = temp;
-        await new Promise(r => setTimeout(r, 100)); // Pause for visualization
+    sortBySelectionPause.addEventListener("click", () => {
+      document.getElementById('sortBySelectionPlay').style.display = "inline";
+      document.getElementById('sortBySelectionPause').style.display = "none";
+    });
 
-        // Color code the rectangles
-        sortBySelectionArr[i].rect.fill('#1abc9c'); // Set the last element to green
-      };
-      sortBySelectionArr[0].rect.fill("#1abc9c");
-    };
-    sortBySelection();
+    sortBySelectionPlay.addEventListener("click", () => {
+      document.getElementById('sortBySelectionPlay').style.display = "none";
+      document.getElementById('sortBySelectionPause').style.display = "inline";
+      startAnimation();
+    });
   });
 
   const sortByInsertionPlay = document.getElementById("sortByInsertionPlay");
-  sortByInsertionPlay.addEventListener("click", () => { 
-    async function sortByInsertion() {
-  
-      for (let i = 1; i <= sortByInsertionArr.length - 1; i++) {
-        x = sortByInsertionArr[i];
-        j = i;
-        while (j > 0 && x.value < sortByInsertionArr[j - 1].value) {
-  
-          // Swap rectangles
-          const tempX = sortByInsertionArr[j].rect.x();
-          sortByInsertionArr[j].rect.x(sortByInsertionArr[j - 1].rect.x());
-          sortByInsertionArr[j - 1].rect.x(tempX);
-          
-          // Swap text
-          const tempTextX = sortByInsertionArr[j].text.x();
-          sortByInsertionArr[j].text.x(sortByInsertionArr[j - 1].text.x());
-          sortByInsertionArr[j - 1].text.x(tempTextX);
-  
-          // Swap elements in sortBySelectionArray
-          const temp = sortByInsertionArr[j];          
-          sortByInsertionArr[j] = sortByInsertionArr[j - 1];
-          sortByInsertionArr[j - 1] = temp;
-  
-          j--;
-        }
-        sortByInsertionArr[j].value = x.value;
-        await new Promise(r => setTimeout(r, 100)); // Pause for visualization
-      }
-    }
-    sortByInsertion();
-  });
-  const mergeSortPlay = document.getElementById("mergeSortPlay");
-  mergeSortPlay.addEventListener("click", () => {
-    async function mergeSort() {
+  const sortByInsertionPause = document.getElementById('sortByInsertionPause');
 
+  sortByInsertionPlay.addEventListener("click", () => { 
+    function startAnimation() {
+      async function sortByInsertion() {
+        for (let i = 1; i <= sortByInsertionArr.length - 1; i++) {
+          x = sortByInsertionArr[i];
+          j = i;
+          
+          // Highlight current element being sorted
+          sortByInsertionArr[j].rect.fill('orange');
+          
+          while (j > 0 && x.value < sortByInsertionArr[j - 1].value) {
+            // Swap rectangles
+            const tempX = sortByInsertionArr[j].rect.x();
+            sortByInsertionArr[j].rect.x(sortByInsertionArr[j - 1].rect.x());
+            sortByInsertionArr[j - 1].rect.x(tempX);
+            
+            // Swap text
+            const tempTextX = sortByInsertionArr[j].text.x();
+            sortByInsertionArr[j].text.x(sortByInsertionArr[j - 1].text.x());
+            sortByInsertionArr[j - 1].text.x(tempTextX);
+            
+            // Swap elements in sortBySelectionArray
+            const temp = sortByInsertionArr[j];
+            sortByInsertionArr[j] = sortByInsertionArr[j - 1];
+            sortByInsertionArr[j - 1] = temp;
+            
+            j--;
+            
+            // Highlight swapped elements
+            sortByInsertionArr[j + 1].rect.fill('#2ecc71');
+            sortByInsertionArr[j].rect.fill('orange');
+            await new Promise(r => setTimeout(r, 1000)); // Pause for visualization
+          }
+          
+          // Change color of the element to green once it is in its final position
+          for (let c = 0; c <= i; c++) {
+            sortByInsertionArr[c].rect.fill('#1abc9c');
+          }
+          //sortByInsertionArr[j].rect.fill('#1abc9c');
+          
+          sortByInsertionArr[j].value = x.value;
+          await new Promise(r => setTimeout(r, 100)); // Pause for visualization
+        }
+      }
+      
+      sortByInsertion();
+      
     }
-    mergeSort();
+    sortByInsertionPause.addEventListener("click", () => {
+      document.getElementById('sortByInsertionPlay').style.display = "inline";
+      document.getElementById('sortByInsertionPause').style.display = "none";
+    });
+
+    sortByInsertionPlay.addEventListener("click", () => {
+      document.getElementById('sortByInsertionPlay').style.display = "none";
+      document.getElementById('sortByInsertionPause').style.display = "inline";
+      startAnimation();
+    });
+
+  });
+
+  const mergeSortPlay = document.getElementById("mergeSortPlay");
+  const mergeSortPause = document.getElementById('mergeSortPause');
+  mergeSortPlay.addEventListener("click", () => {
+    function startAnimation() {
+
+      async function mergeSort(start, end) {
+        if (end <= start) {
+          return;
+        }
+      
+        const mid = Math.floor((start + end) / 2);
+        await mergeSort(start, mid);
+        await mergeSort(mid + 1, end);
+      
+        const tempArr = [];
+      
+        let p = start;
+        let q = mid + 1;
+        let k = 0;
+      
+        while (p <= mid && q <= end) {
+          if (mergeSortArr[p].value < mergeSortArr[q].value) {
+            tempArr[k++] = mergeSortArr[p++];
+          } else {
+            tempArr[k++] = mergeSortArr[q++];
+          }
+        }
+      
+        while (p <= mid) {
+          tempArr[k++] = mergeSortArr[p++];
+        }
+      
+        while (q <= end) {
+          tempArr[k++] = mergeSortArr[q++];
+        }
+      
+        for (let i = start; i <= end; i++) {
+          mergeSortArr[i].value = tempArr[i - start].value;
+          swapElements(i, i - start + start);
+      
+          await new Promise(r => setTimeout(r, 100)); // Pause for visualization
+        }
+      }
+      
+      async function visualizeMergeSort(arr) {
+        await mergeSort(0, arr.length - 1);
+      
+        // Color code the sorted array
+        for (let i = 0; i < arr.length; i++) {
+          mergeSortArr[i].rect.fill('#1abc9c');
+          await new Promise(r => setTimeout(r, 50)); // Pause for visualization
+        }
+      }
+
+
+      async function swapElements(index1, index2) {
+        const tempRectX = mergeSortArr[index1].rect.x();
+        mergeSortArr[index1].rect.x(mergeSortArr[index2].rect.x());
+        mergeSortArr[index2].rect.x(tempRectX);
+      
+        const tempTextX = mergeSortArr[index1].text.x();
+        mergeSortArr[index1].text.x(mergeSortArr[index2].text.x());
+        mergeSortArr[index2].text.x(tempTextX);
+      
+        const temp = mergeSortArr[index1];
+        mergeSortArr[index1] = mergeSortArr[index2];
+        mergeSortArr[index2] = temp;
+      }
+    
+      visualizeMergeSort(mergeSortArr);
+      // werkt nog niet!
+    }
+
+    mergeSortPause.addEventListener("click", () => {
+      document.getElementById('mergeSortPlay').style.display = "inline";
+      document.getElementById('mergeSortPause').style.display = "none";
+    });
+
+    mergeSortPlay.addEventListener("click", () => {
+      document.getElementById('mergeSortPlay').style.display = "none";
+      document.getElementById('mergeSortPause').style.display = "inline";
+      startAnimation();
+    });
+
   });
 
   const bubbleSortPlay = document.getElementById("bubbleSortPlay");
+  const bubbleSortPause = document.getElementById('bubbleSortPause');
+
   bubbleSortPlay.addEventListener("click", () => { 
-    async function bubbleSort() {
-  
-      for (let i = 0; i < bubbleSortArr.length; i++) {
-        for (let j = 0; j < bubbleSortArr.length - i - 1; j++) {
-          if (bubbleSortArr[j].value > bubbleSortArr[j+1].value) {
-            // Swap rectangles
-            const tempX = bubbleSortArr[j].rect.x();
-            bubbleSortArr[j].rect.x(bubbleSortArr[j+1].rect.x());
-            bubbleSortArr[j+1].rect.x(tempX);
-            
-            // Swap text
-            const tempTextX = bubbleSortArr[j].text.x();
-            bubbleSortArr[j].text.x(bubbleSortArr[j+1].text.x());
-            bubbleSortArr[j+1].text.x(tempTextX);
-            
-            // Swap elements in bubbleSortArray
-            const temp = bubbleSortArr[j];
-            bubbleSortArr[j] = bubbleSortArr[j+1];
-            bubbleSortArr[j+1] = temp;
+    function startAnimation() {
+
+      async function bubbleSort() {
+    
+        for (let i = 0; i < bubbleSortArr.length; i++) {
+          for (let j = 0; j < bubbleSortArr.length - i - 1; j++) {
+            if (bubbleSortArr[j].value > bubbleSortArr[j+1].value) {
+              // Swap rectangles
+              const tempX = bubbleSortArr[j].rect.x();
+              bubbleSortArr[j].rect.x(bubbleSortArr[j+1].rect.x());
+              bubbleSortArr[j+1].rect.x(tempX);
+              
+              // Swap text
+              const tempTextX = bubbleSortArr[j].text.x();
+              bubbleSortArr[j].text.x(bubbleSortArr[j+1].text.x());
+              bubbleSortArr[j+1].text.x(tempTextX);
+              
+              // Swap elements in bubbleSortArray
+              const temp = bubbleSortArr[j];
+              bubbleSortArr[j] = bubbleSortArr[j+1];
+              bubbleSortArr[j+1] = temp;
+            }
+            // Color code the rectangles
+            bubbleSortArr[j].rect.fill('#2ecc71');
+            bubbleSortArr[j+1].rect.fill('#e74c3c');
+            await new Promise(r => setTimeout(r, 1000)); // Pause for visualization
           }
-          // Color code the rectangles
-          bubbleSortArr[j].rect.fill('#2ecc71');
-          bubbleSortArr[j+1].rect.fill('#e74c3c');
-          await new Promise(r => setTimeout(r, 100)); // Pause for visualization
+          bubbleSortArr[bubbleSortArr.length - i - 1].rect.fill('#1abc9c'); // Set the last element to green
         }
-        bubbleSortArr[bubbleSortArr.length - i - 1].rect.fill('#1abc9c'); // Set the last element to green
-      }
-    };
-    bubbleSort();
+      };
+      bubbleSort();
+      
+    }
+
+    bubbleSortPause.addEventListener("click", () => {
+      document.getElementById('bubbleSortPlay').style.display = "inline";
+      document.getElementById('bubbleSortPause').style.display = "none";
+    });
+
+    bubbleSortPlay.addEventListener("click", () => {
+      document.getElementById('bubbleSortPlay').style.display = "none";
+      document.getElementById('bubbleSortPause').style.display = "inline";
+      startAnimation();
+    });
 
   });
 
