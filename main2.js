@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
 
     function drawBinaryHeap(values) {
         // Create an SVG.js canvas inside the specified container element
-        const canvas = SVG().addTo("#drawHeap").size(800, 600);
+        const canvas = SVG().addTo("#drawHeap").size(1050, 600);
 
         // Define some constants for sizing and positioning elements
         const radius = 20;
