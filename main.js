@@ -225,72 +225,63 @@ window.onload = function() {
   mergeSortPlay.addEventListener("click", () => {
     function startAnimation() {
 
-      async function mergeSort(start, end) {
-        if (end <= start) {
-          return;
+      async function visualizeMergeSort() {
+        mergeSortRecursive(mergeSortArr, 0, mergeSortArr.length - 1);
+      }
+
+      async function mergeSortRecursive(a, begin, einde) {
+        if (begin < einde) {
+          const midden = Math.floor((begin + einde) / 2);
+    
+          await mergeSortRecursive(a, begin, midden);
+          await mergeSortRecursive(a, midden + 1, einde);
+          await merge(a, begin, midden, einde);
+        }
+      }
+      
+      async function merge(a, begin, midden, einde) {
+        let i = begin; // Counter for the left subarray
+        let j = midden + 1; // Counter for the right subarray
+        let k = i; // Counter for the auxiliary array hulpa
+        const hulpa = new Array(einde - begin + 1); // Temporary storage array
+      
+        while (i <= midden && j <= einde) {
+          if (a[i].value <= a[j].value) {
+            hulpa[k] = { ...a[i] };
+            i++;
+          } else {
+            hulpa[k] = {...a[j]};
+            j++;
+          }
+          k++;
         }
       
-        const mid = Math.floor((start + end) / 2);
-        await mergeSort(start, mid);
-        await mergeSort(mid + 1, end);
-      
-        const tempArr = [];
-      
-        let p = start;
-        let q = mid + 1;
-        let k = 0;
-      
-        while (p <= mid && q <= end) {
-          if (mergeSortArr[p].value < mergeSortArr[q].value) {
-            tempArr[k++] = mergeSortArr[p++];
-          } else {
-            tempArr[k++] = mergeSortArr[q++];
+        if (i > midden) {
+          // The second subarray needs to be emptied
+          while (j <= einde) {
+            hulpa[k] = {...a[j]};
+            j++;
+            k++;
+          }
+        } else {
+          // The first subarray needs to be emptied
+          while (i <= midden) {
+            hulpa[k] = {...a[i]};
+            i++;
+            k++;
           }
         }
       
-        while (p <= mid) {
-          tempArr[k++] = mergeSortArr[p++];
+        for (let k = begin; k <= einde; k++) {
+          // Copy the sorted subarray back to a
+          // TODO: sorted right but doesn't show on screen
+          a[k] = {...hulpa[k]};
         }
-      
-        while (q <= end) {
-          tempArr[k++] = mergeSortArr[q++];
-        }
-      
-        for (let i = start; i <= end; i++) {
-          mergeSortArr[i].value = tempArr[i - start].value;
-          swapElements(i, i - start + start);
-      
-          await new Promise(r => setTimeout(r, 100)); // Pause for visualization
-        }
-      }
-      
-      async function visualizeMergeSort(arr) {
-        await mergeSort(0, arr.length - 1);
-      
-        // Color code the sorted array
-        for (let i = 0; i < arr.length; i++) {
-          mergeSortArr[i].rect.fill('#1abc9c');
-          await new Promise(r => setTimeout(r, 50)); // Pause for visualization
-        }
-      }
-
-
-      async function swapElements(index1, index2) {
-        const tempRectX = mergeSortArr[index1].rect.x();
-        mergeSortArr[index1].rect.x(mergeSortArr[index2].rect.x());
-        mergeSortArr[index2].rect.x(tempRectX);
-      
-        const tempTextX = mergeSortArr[index1].text.x();
-        mergeSortArr[index1].text.x(mergeSortArr[index2].text.x());
-        mergeSortArr[index2].text.x(tempTextX);
-      
-        const temp = mergeSortArr[index1];
-        mergeSortArr[index1] = mergeSortArr[index2];
-        mergeSortArr[index2] = temp;
       }
     
-      visualizeMergeSort(mergeSortArr);
-      // werkt nog niet!
+      console.log(visualizeMergeSort());
+      console.log(mergeSortArr);
+      
     }
 
     mergeSortPause.addEventListener("click", () => {

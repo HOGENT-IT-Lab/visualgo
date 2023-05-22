@@ -67,11 +67,12 @@ img {
 
 div.icons {
   display: block;
-  text-align: center;
+  margin-bottom: 10px;
+  border-width: 10px;
 }
 
 div.icons img {
-  width: 3%;
+  width: 20px;
   margin-left: 1%;
   margin-right: 1%;
   cursor: pointer;
