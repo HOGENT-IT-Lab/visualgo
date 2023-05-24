@@ -1,7 +1,10 @@
+// TODO: If pause button is clicked, stop the algorithm
+
 const sortBySelectionArr = [];
 const sortByInsertionArr = [];
 const mergeSortArr = [];
 const bubbleSortArr = [];
+
 const rectWidth = 30;
 const rectHeight = 30;
 const rectSpacing = 10;

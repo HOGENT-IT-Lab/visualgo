@@ -3,13 +3,13 @@
 <head>
   <title>Algorithm Visualization</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js"></script>
-  <script src="main.js"></script>
+  <script src="main3.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
   <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
 </head>
 <body>
   <input type="checkbox" id="active">
-  <label for="active" class="menu-btn"><i class="fas fa-bars"></i></label>
+  <label for="active" class="menu-btn">MENU<i class="fas fa-bars"></i></label>
   <div class="wrapper">
     <ul>
       <li><a href="#">Home</a></li>
@@ -23,6 +23,17 @@
   <h2>Searching Algorithms</h2>
   <section>
     <h3>Sequential search</h3>
+    <p>Suppose your program keeps a long array of names, say the names of 5000 students, 
+      where the names are not sorted.   If you want to know whether your own name appears in the array, 
+      the most obvious way to find out is to go through all the names in the list one by one (front to back) 
+      and see if your name appears.  This way of working is called LINEAIR SEARCH or SEQUENTIAL SEARCH.</p>
+    <p>Give a number to search in the array: 
+      <input id="sequentialNumber" type="number">
+    </p>
+    <button id="sequentialSearchButton">Search</button>
+    <p id="confirmNumber"></p>
+    <div id="sequentialSearch"></div>
+    <p id="sequentialResult"></p>
     <h3>Binary search</h3>
 
   </section>

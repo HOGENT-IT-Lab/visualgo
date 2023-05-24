@@ -103,12 +103,13 @@ div.icons img {
   text-align: center;
   line-height: 50px;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 17px;
   color: #fff;
   cursor: pointer;
   background-color: rgb(90, 138, 158);
   transition: all 0.3s ease-in-out;
 }
+
 #active:checked ~ .menu-btn{
   color: #fff;
 }
